@@ -10,6 +10,7 @@ import {
   Mail,
   Moon,
   Sun,
+  Laptop,
   Bell,
   LogOut,
   RotateCcw,
@@ -20,7 +21,7 @@ import {
 
 export const ProfileView: React.FC = () => {
   const { user, logout, resetOnboarding } = useAuth();
-  const { isDarkMode, toggleDarkMode, isMobileFrameEnabled, toggleMobileFrame } = useTheme();
+  const { themeMode, setThemeMode, isDarkMode, isMobileFrameEnabled, toggleMobileFrame } = useTheme();
   const { resetAllData } = useTask();
 
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
@@ -101,29 +102,60 @@ export const ProfileView: React.FC = () => {
         </h3>
 
         <div className="space-y-2 text-xs">
-          {/* Dark Mode Toggle */}
-          <div className="flex items-center justify-between p-2.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/60 transition">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-300 flex items-center justify-center">
-                {isDarkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
-              </div>
-              <div>
-                <p className="font-bold text-slate-800 dark:text-slate-200">Mode Gelap (Dark Mode)</p>
-                <p className="text-[11px] text-slate-400">Ganti tampilan tema gelap/terang</p>
+          {/* Theme Selection Section */}
+          <div className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-2xl space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-lg bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-300 flex items-center justify-center font-bold">
+                  {isDarkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
+                </div>
+                <div>
+                  <p className="font-bold text-slate-800 dark:text-slate-200 text-xs">Tema Tampilan (Mode Gelap & Terang)</p>
+                  <p className="text-[10px] text-slate-400">Pilih mode tampilan visual aplikasi</p>
+                </div>
               </div>
             </div>
-            <button
-              onClick={toggleDarkMode}
-              className={`w-11 h-6 rounded-full transition-colors p-0.5 ${
-                isDarkMode ? 'bg-blue-600' : 'bg-slate-300'
-              }`}
-            >
-              <div
-                className={`w-5 h-5 rounded-full bg-white transition-transform ${
-                  isDarkMode ? 'translate-x-5' : 'translate-x-0'
+
+            <div className="grid grid-cols-3 gap-2 pt-1">
+              <button
+                type="button"
+                onClick={() => setThemeMode('light')}
+                className={`py-2 px-2.5 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition ${
+                  themeMode === 'light'
+                    ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                    : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800'
                 }`}
-              />
-            </button>
+              >
+                <Sun className="w-3.5 h-3.5 text-amber-400" />
+                <span>Terang</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setThemeMode('dark')}
+                className={`py-2 px-2.5 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition ${
+                  themeMode === 'dark'
+                    ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                    : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`}
+              >
+                <Moon className="w-3.5 h-3.5" />
+                <span>Gelap</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setThemeMode('system')}
+                className={`py-2 px-2.5 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition ${
+                  themeMode === 'system'
+                    ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                    : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`}
+              >
+                <Laptop className="w-3.5 h-3.5" />
+                <span>Sistem</span>
+              </button>
+            </div>
           </div>
 
           {/* Notifications Toggle */}
